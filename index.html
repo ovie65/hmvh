@@ -1,0 +1,75 @@
+<div class="main">
+<h1>hotel rent coundown</h1>
+<form id="rentForm">
+  <label for="days">Enter number of days to stay:</label>
+  <input type="number" id="days" name="days" min="1">
+  <button type="button" onclick="rentclick()">Calculate</button>
+</form>
+<div id="divine" style="display: none;">
+  <p>Total amount: <span id="tobi">0</span> naira</p>
+  <p>Time left: <span id="countdown"></span></p>
+</div>
+<div id="voltage" style="display: none;">
+  <p>Your is due GET OUT OF MY HOUSE.</p>
+</div>
+
+</div>
+
+
+
+<style>
+  .main{
+    background-color: grey;
+    width:850px;
+    border:2px solid black;
+    padding:60px;
+    margin:0px auto;
+  }
+  #rentForm{
+    color: red;
+  }
+</style>
+</body>
+
+
+<script>
+  let pricePerDay = 5000;
+  let countdownInterval;
+  
+  function rentclick() {
+    const days = parseInt(document.getElementById('days').value);
+    const totalAmount = pricePerDay * days;
+    
+    document.getElementById('tobi').textContent = '#' + totalAmount;
+    document.getElementById('divine').style.display = 'block';
+    
+    startCountdown(days);
+  }
+  
+  function startCountdown(days) {
+    let endTime = new Date().getTime() + (days * 24 * 60 * 60 * 1000);
+    
+    countdownInterval = setInterval(function() {
+      let now = new Date().getTime();
+      let timeLeft = endTime - now;
+      
+      if (timeLeft <= 0) {
+        clearInterval(countdownInterval);
+        
+      } else {
+        let dayday = Math.floor(timeLeft / (24 * 60 * 60 * 1000));
+        let hourshours = Math.floor((timeLeft % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+        let minn = Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000));
+        let secc = Math.floor((timeLeft % (60 * 1000)) / 1000);
+        
+        let countdownText = `${dayday}d ${hourshours}h ${minn}m ${secc}s`;
+        document.getElementById('countdown').textContent = countdownText;
+      }
+    }, 1000);
+  }
+  
+  function showNotification() {
+    document.getElementById('divine').style.display = 'none';
+    document.getElementById('voltage').style.display = 'block';
+  }
+  </script>
